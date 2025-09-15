@@ -1,13 +1,10 @@
 package br.com.clinica;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+import br.com.clinica.controlador.ControladorSistema;
+
+public class App {
+    public static void main(String[] args) {
+        ControladorSistema sistema = ControladorSistema.getInstance();
+        sistema.inicializaSistema();
     }
 }
