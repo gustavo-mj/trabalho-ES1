@@ -1,6 +1,6 @@
 package br.com.clinica;
 
-import br.com.clinica.controlador.ControladorSistema;
+import br.com.clinica.domain.controlador.ControladorSistema;
 
 public class App {
     public static void main(String[] args) {
