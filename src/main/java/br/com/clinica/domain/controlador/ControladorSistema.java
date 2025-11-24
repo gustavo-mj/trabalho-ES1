@@ -19,6 +19,7 @@ public class ControladorSistema {
 	private final ControladorLotacao controladorLotacao;
 	private final ControladorEstoque controladorEstoque;
 	private final ControladorVacinacao controladorVacinacao;
+	private final ControladorConsulta controladorConsulta;
 	private final TelaMenu telaMenu;
 
 	// 3. NOVAS DEPENDÊNCIAS
@@ -37,7 +38,8 @@ public class ControladorSistema {
 			UsuarioRepository usuarioRepository, // Injeta
 			PasswordEncoder passwordEncoder,
 			ControladorEstoque controladorEstoque,
-			ControladorVacinacao controladorVacinacao) { // Injeta
+			ControladorVacinacao controladorVacinacao,
+			ControladorConsulta controladorConsulta) { // Injeta
 		this.controladorAnimal = controladorAnimal;
 		this.controladorTutor = controladorTutor;
 		this.controladorProfissional = controladorProfissional;
@@ -47,6 +49,7 @@ public class ControladorSistema {
 		this.passwordEncoder = passwordEncoder; // Atribui
 		this.controladorEstoque = controladorEstoque;
 		this.controladorVacinacao = controladorVacinacao;
+		this.controladorConsulta = controladorConsulta;
 	}
 
 	public void inicializaSistema(Usuario usuario) {
@@ -152,7 +155,7 @@ public class ControladorSistema {
 					telaMenu.mostraMensagemAcessoNegado();
 				}
 				break;
-			case 5: // 5. NOVA OPÇÃO
+			case 5:
 				abreTelaAlterarSenha(false);
 				break;
 			case 6:
@@ -160,6 +163,9 @@ public class ControladorSistema {
 				break;
 			case 7:
 				abreTelaVacinacao();
+				break;
+			case 8:
+				controladorConsulta.exibirMenu(usuarioLogado);
 				break;
 			case 0:
 				encerraSistema();

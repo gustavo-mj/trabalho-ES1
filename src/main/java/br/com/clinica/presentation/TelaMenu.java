@@ -52,6 +52,9 @@ public class TelaMenu {
 			panelOpcoes.add(lotacoes);
 			panelOpcoes.add(estoque);
 			panelOpcoes.add(vacinacao);
+			JRadioButton consultas = new JRadioButton("Consultas");
+			grupoOpcoes.add(consultas);
+			panelOpcoes.add(consultas);
 		} else if (role == Role.SECRETARIA) {
 			JRadioButton tutores = new JRadioButton("Tutores");
 			JRadioButton animais = new JRadioButton("Animais");
@@ -65,6 +68,9 @@ public class TelaMenu {
 			panelOpcoes.add(animais);
 			panelOpcoes.add(estoque);
 			panelOpcoes.add(vacinacao);
+			JRadioButton consultas = new JRadioButton("Consultas");
+			grupoOpcoes.add(consultas);
+			panelOpcoes.add(consultas);
 		} else if (role == Role.VETERINARIO) {
 			JRadioButton vacinacao = new JRadioButton("Vacinação");
 			JRadioButton estoque = new JRadioButton("Estoque de Vacinas");
@@ -72,6 +78,9 @@ public class TelaMenu {
 			grupoOpcoes.add(estoque);
 			panelOpcoes.add(vacinacao);
 			panelOpcoes.add(estoque);
+			JRadioButton consultas = new JRadioButton("Consultas");
+			grupoOpcoes.add(consultas);
+			panelOpcoes.add(consultas);
 		}
 
 		// Adiciona as opções comuns no final
@@ -101,6 +110,7 @@ public class TelaMenu {
 				else if (textoBotao.equals("Lotação")) opcaoSelecionada = 4;
 				else if (textoBotao.equals("Estoque de Vacinas")) opcaoSelecionada = 6;
 				else if (textoBotao.equals("Vacinação")) opcaoSelecionada = 7;
+				else if (textoBotao.equals("Consultas")) opcaoSelecionada = 8;
 			}
 
 			// Hack para garantir que os botões de Admin/Secretaria sejam encontrados
@@ -117,6 +127,7 @@ public class TelaMenu {
 							else if (texto.equals("Lotação")) opcaoSelecionada = 4;
 							else if (texto.equals("Estoque de Vacinas")) opcaoSelecionada = 6;
 							else if (texto.equals("Vacinação")) opcaoSelecionada = 7;
+							else if (texto.equals("Consultas")) opcaoSelecionada = 8;
 							break;
 						}
 					}
