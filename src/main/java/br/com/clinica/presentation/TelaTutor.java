@@ -18,13 +18,11 @@ public class TelaTutor extends TelaCRUD {
 		return "Tela de Tutores";
 	}
 
-	// 3. MÉTODO ATUALIZADO (agora recebe a Role)
 	@Override
 	public int exibirMenu(Role role) {
 		// Define as opções base (que todos podem ver)
 		List<String> opcoesList = new ArrayList<>();
 
-		// 4. LÓGICA DE PERMISSÃO DA TELA
 		if (role == Role.ADMIN || role == Role.SECRETARIA) {
 			opcoesList.add("Cadastrar"); // Índice 0
 			opcoesList.add("Alterar");   // Índice 1
@@ -51,8 +49,6 @@ public class TelaTutor extends TelaCRUD {
 				opcoes[0]
 		);
 
-		// 5. TRADUZ A ESCOLHA DE VOLTA PARA O PADRÃO (0-4)
-		// Isso é crucial para o switch-case do controlador
 		if (escolha == JOptionPane.CLOSED_OPTION) {
 			return 4; // Fechar = Voltar
 		}

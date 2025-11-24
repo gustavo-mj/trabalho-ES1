@@ -19,7 +19,6 @@ public class TelaProfissional extends TelaCRUD {
 		return "Tela de Profissionais";
 	}
 
-	// 3. MÉTODO ATUALIZADO (recebe Role)
 	@Override
 	public int exibirMenu(Role role) {
 		List<String> opcoesList = new ArrayList<>();

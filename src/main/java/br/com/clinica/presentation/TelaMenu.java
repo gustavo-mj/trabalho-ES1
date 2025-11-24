@@ -38,23 +38,41 @@ public class TelaMenu {
 			JRadioButton tutores = new JRadioButton("Tutores");
 			JRadioButton animais = new JRadioButton("Animais");
 			JRadioButton lotacoes = new JRadioButton("Lotação");
+			JRadioButton estoque = new JRadioButton("Estoque de Vacinas");
+			JRadioButton vacinacao = new JRadioButton("Vacinação");
 			grupoOpcoes.add(profissionais);
 			grupoOpcoes.add(tutores);
 			grupoOpcoes.add(animais);
 			grupoOpcoes.add(lotacoes);
+			grupoOpcoes.add(estoque);
+			grupoOpcoes.add(vacinacao);
 			panelOpcoes.add(profissionais);
 			panelOpcoes.add(tutores);
 			panelOpcoes.add(animais);
 			panelOpcoes.add(lotacoes);
+			panelOpcoes.add(estoque);
+			panelOpcoes.add(vacinacao);
 		} else if (role == Role.SECRETARIA) {
 			JRadioButton tutores = new JRadioButton("Tutores");
 			JRadioButton animais = new JRadioButton("Animais");
+			JRadioButton estoque = new JRadioButton("Estoque de Vacinas");
+			JRadioButton vacinacao = new JRadioButton("Vacinação");
 			grupoOpcoes.add(tutores);
 			grupoOpcoes.add(animais);
+			grupoOpcoes.add(estoque);
+			grupoOpcoes.add(vacinacao);
 			panelOpcoes.add(tutores);
 			panelOpcoes.add(animais);
+			panelOpcoes.add(estoque);
+			panelOpcoes.add(vacinacao);
+		} else if (role == Role.VETERINARIO) {
+			JRadioButton vacinacao = new JRadioButton("Vacinação");
+			JRadioButton estoque = new JRadioButton("Estoque de Vacinas");
+			grupoOpcoes.add(vacinacao);
+			grupoOpcoes.add(estoque);
+			panelOpcoes.add(vacinacao);
+			panelOpcoes.add(estoque);
 		}
-		// VETERINARIO (ou outros) não vê nenhum botão de CRUD, só as opções comuns
 
 		// Adiciona as opções comuns no final
 		panelOpcoes.add(new JSeparator()); // Linha divisória
@@ -81,6 +99,8 @@ public class TelaMenu {
 				else if (textoBotao.equals("Tutores")) opcaoSelecionada = 2;
 				else if (textoBotao.equals("Animais")) opcaoSelecionada = 3;
 				else if (textoBotao.equals("Lotação")) opcaoSelecionada = 4;
+				else if (textoBotao.equals("Estoque de Vacinas")) opcaoSelecionada = 6;
+				else if (textoBotao.equals("Vacinação")) opcaoSelecionada = 7;
 			}
 
 			// Hack para garantir que os botões de Admin/Secretaria sejam encontrados
@@ -90,10 +110,13 @@ public class TelaMenu {
 					if (comp instanceof JRadioButton) {
 						JRadioButton btn = (JRadioButton) comp;
 						if (btn.isSelected()) {
+							String texto = btn.getText();
 							if (btn.getText().equals("Profissionais")) opcaoSelecionada = 1;
-							else if (btn.getText().equals("Tutores")) opcaoSelecionada = 2;
-							else if (btn.getText().equals("Animais")) opcaoSelecionada = 3;
-							else if (btn.getText().equals("Lotação")) opcaoSelecionada = 4;
+							else if (texto.equals("Tutores")) opcaoSelecionada = 2;
+							else if (texto.equals("Animais")) opcaoSelecionada = 3;
+							else if (texto.equals("Lotação")) opcaoSelecionada = 4;
+							else if (texto.equals("Estoque de Vacinas")) opcaoSelecionada = 6;
+							else if (texto.equals("Vacinação")) opcaoSelecionada = 7;
 							break;
 						}
 					}
@@ -125,9 +148,41 @@ public class TelaMenu {
 	}
 
 	/**
-	 * 4. NOVO MÉTODO PARA PEGAR A NOVA SENHA
-	 * @return Array de String: {senhaAntiga, novaSenha, confirmaNovaSenha}
+	 * NOVO MÉTODO: Exibe formulário apenas para definir a nova senha (sem pedir a antiga).
+	 * Usado no primeiro acesso.
 	 */
+	public String[] pegarDadosSenhaInicial() {
+		JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
+		panel.setPreferredSize(new Dimension(350, 80));
+
+		panel.add(new JLabel("Nova Senha:"));
+		JPasswordField novaSenhaField = new JPasswordField();
+		panel.add(novaSenhaField);
+
+		panel.add(new JLabel("Confirmar Nova Senha:"));
+		JPasswordField confirmaSenhaField = new JPasswordField();
+		panel.add(confirmaSenhaField);
+
+		// Foca no campo de nova senha ao abrir
+		SwingUtilities.invokeLater(() -> novaSenhaField.requestFocusInWindow());
+
+		int result = JOptionPane.showConfirmDialog(
+				null,
+				panel,
+				"Definição de Senha Pessoal (Primeiro Acesso)",
+				JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE
+		);
+
+		if (result == JOptionPane.OK_OPTION) {
+			return new String[]{
+					new String(novaSenhaField.getPassword()),
+					new String(confirmaSenhaField.getPassword())
+			};
+		}
+		return null; // Cancelou
+	}
+
 	public String[] pegarDadosNovaSenha() {
 		JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
 		panel.setPreferredSize(new Dimension(350, 100));
@@ -171,7 +226,6 @@ public class TelaMenu {
 				JOptionPane.ERROR_MESSAGE);
 	}
 
-	// Método simples de mensagem (usado pelo ControladorSistema)
 	public void mostraMensagem(String titulo, String mensagem) {
 		JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);
 	}

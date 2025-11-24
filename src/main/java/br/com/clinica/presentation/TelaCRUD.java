@@ -7,10 +7,8 @@ public abstract class TelaCRUD {
 
 	protected abstract String getTituloTela();
 
-	// 2. MÉTODO ATUALIZADO (agora recebe a Role)
 	public abstract int exibirMenu(Role role);
 
-	// 3. NOVO MÉTODO (para reutilização)
 	public void mostraMensagemAcessoNegado() {
 		JOptionPane.showMessageDialog(null,
 				"Acesso Negado. Você não tem permissão para esta função.",

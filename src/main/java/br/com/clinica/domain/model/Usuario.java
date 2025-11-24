@@ -20,6 +20,13 @@ public class Usuario {
 	@Column(nullable = false)
 	private Role role; // Nível de acesso
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private StatusUsuario status;
+
+	@Column(nullable = false)
+	private int tentativasFalhas;
+
 	// Relaciona o login a um Profissional (opcional, mas muito útil)
 	@OneToOne
 	@JoinColumn(name = "profissional_cpf", referencedColumnName = "cpf")
@@ -32,6 +39,8 @@ public class Usuario {
 		this.username = username;
 		this.password = password;
 		this.role = role;
+		this.status = StatusUsuario.NOVO;
+		this.tentativasFalhas = 0;
 	}
 
 	// Getters e Setters
@@ -45,4 +54,9 @@ public class Usuario {
 	public void setRole(Role role) { this.role = role; }
 	public Profissional getProfissional() { return profissional; }
 	public void setProfissional(Profissional profissional) { this.profissional = profissional; }
+	public StatusUsuario getStatus() { return status; }
+	public void setStatus(StatusUsuario status) { this.status = status; }
+	public int getTentativasFalhas() { return tentativasFalhas; }
+	public void setTentativasFalhas(int tentativasFalhas) { this.tentativasFalhas = tentativasFalhas; }
+
 }

@@ -16,10 +16,8 @@ public class Lotacao {
 
 	private int salario;
 
-	// --- NOVO CAMPO ---
 	@Enumerated(EnumType.STRING)
 	private Role role; // Nível de acesso do cargo
-	// --- FIM NOVO CAMPO ---
 
 	// 3. Construtor vazio (obrigatório para JPA)
 	public Lotacao() {}

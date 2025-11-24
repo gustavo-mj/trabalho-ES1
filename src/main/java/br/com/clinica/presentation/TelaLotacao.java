@@ -15,7 +15,6 @@ public class TelaLotacao extends TelaCRUD {
 		return "Tela de Lotações";
 	}
 
-	// 3. MÉTODO ATUALIZADO (recebe Role)
 	@Override
 	public int exibirMenu(Role role) {
 		List<String> opcoesList = new ArrayList<>();

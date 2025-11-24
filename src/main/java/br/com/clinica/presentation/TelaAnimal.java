@@ -19,7 +19,6 @@ public class TelaAnimal extends TelaCRUD {
 		return "Tela de Animais";
 	}
 
-	// 3. MÉTODO ATUALIZADO (recebe Role)
 	@Override
 	public int exibirMenu(Role role) {
 		// Define as opções base (que todos podem ver)

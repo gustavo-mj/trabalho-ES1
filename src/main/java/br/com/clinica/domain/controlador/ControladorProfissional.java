@@ -111,13 +111,12 @@ public class ControladorProfissional {
 			novoUsuario.setProfissional(p); // Vincula o usuário ao profissional
 
 			usuarioRepository.save(novoUsuario);
-			// --- FIM DA CRIAÇÃO DO USUÁRIO ---
 
 			telaProfissional.mostraMensagem("Profissional (e seu Usuário) cadastrado com sucesso!");
 
 		} catch (Exception e) {
 			telaProfissional.mostraMensagem("Erro ao cadastrar: " + e.getMessage());
-			// Como o método é @Transactional, se der erro aqui, o Profissional também não será salvo (rollback).
+			//Como o método é Transactional, se der erro aqui, o Profissional também não será salvo (rollback).
 		}
 	}
 
@@ -204,7 +203,6 @@ public class ControladorProfissional {
 		}
 	}
 
-	// ... (método exibirMenu(Usuario usuario) e getProfissionais() continuam iguais) ...
 	public void exibirMenu(Usuario usuario) {
 		boolean continua = true;
 		Role role = usuario.getRole();

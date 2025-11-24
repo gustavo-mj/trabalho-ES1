@@ -1,5 +1,6 @@
 package br.com.clinica.domain.controlador;
 
+import br.com.clinica.domain.model.StatusUsuario;
 import br.com.clinica.domain.model.Usuario;
 import br.com.clinica.presentation.TelaLogin;
 import br.com.clinica.repository.UsuarioRepository;
@@ -18,37 +19,65 @@ public class ControladorLogin {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	@Autowired
-	private PasswordEncoder passwordEncoder; // Bean do SecurityConfig
+	private PasswordEncoder passwordEncoder;
 
 	/**
-	 * Tenta autenticar o usuário.
-	 * Continua pedindo as credenciais até o login ser válido ou o usuário cancelar.
-	 * @return O objeto Usuario logado, ou null se o usuário desistiu.
+	 * Lógica atualizada para tratar Bloqueio e Tentativas.
 	 */
-	@Transactional(readOnly = true)
+	@Transactional // Importante para salvar o incremento das tentativas
 	public Usuario autenticar() {
 		while (true) {
 			String[] credenciais = telaLogin.pegarCredenciais();
 
-			// 1. Usuário cancelou ou fechou a janela de login
 			if (credenciais == null) {
-				return null; // Encerra a tentativa de login
+				return null; // Cancelou
 			}
 
 			String username = credenciais[0];
 			String senhaDigitada = credenciais[1];
 
-			// 2. Tenta buscar o usuário no banco
 			Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
 
-			// 3. Verifica se o usuário existe E se a senha bate
-			if (usuarioOpt.isPresent() && passwordEncoder.matches(senhaDigitada, usuarioOpt.get().getPassword())) {
-				// Sucesso! Retorna o usuário logado
-				return usuarioOpt.get();
+			if (usuarioOpt.isPresent()) {
+				Usuario usuario = usuarioOpt.get();
+
+				// 1. Verifica se já está BLOQUEADO
+				if (usuario.getStatus() == StatusUsuario.BLOQUEADO) {
+					telaLogin.mostraMensagemErro("Acesso Bloqueado. Contate o Administrador.");
+					continue; // Volta para o login
+				}
+
+				// 2. Verifica a senha
+				if (passwordEncoder.matches(senhaDigitada, usuario.getPassword())) {
+					// SUCESSO!
+					// Zera as tentativas se tiver alguma
+					if (usuario.getTentativasFalhas() > 0) {
+						usuario.setTentativasFalhas(0);
+						usuarioRepository.save(usuario);
+					}
+					return usuario;
+				} else {
+					// SENHA ERRADA
+					int tentativas = usuario.getTentativasFalhas() + 1;
+					usuario.setTentativasFalhas(tentativas);
+
+					String msgErro = "Usuário ou senha inválidos.";
+
+					// Verifica se deve BLOQUEAR (>= 3 erros)
+					if (tentativas >= 3) {
+						usuario.setStatus(StatusUsuario.BLOQUEADO);
+						msgErro = "Número de tentativas excedido. Usuário BLOQUEADO.";
+					} else {
+						msgErro += "\nTentativa " + tentativas + " de 3.";
+					}
+
+					usuarioRepository.save(usuario); // Salva no banco o incremento ou bloqueio
+					telaLogin.mostraMensagemErro(msgErro);
+				}
+
 			} else {
-				// Falha
-				telaLogin.mostraMensagemErro("Usuário ou senha inválidos. Tente novamente.");
-				// O loop 'while(true)' fará a tela de login aparecer novamente
+				// Usuário não encontrado (por segurança, não dizemos que não existe, mas não incrementamos contador de ninguém)
+				telaLogin.mostraMensagemErro("Usuário ou senha inválidos.");
 			}
 		}
 	}

@@ -41,7 +41,6 @@ public class Animal {
 		this.tutor = tutor;
 	}
 
-	// Getters e Setters (continuam iguais)
 	public String getIdMicrochip() { return idMicroChip; }
 	public void setIdMicroChip(String idMicroChip) { this.idMicroChip = idMicroChip; }
 	public String getNome() { return nome; }

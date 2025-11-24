@@ -113,7 +113,6 @@ public class ControladorAnimal {
 		}
 	}
 
-	// 1. MÉTODO ATUALIZADO (recebe Usuário)
 	public void exibirMenu(Usuario usuario) {
 		boolean continua = true;
 		Role role = usuario.getRole(); // Pega a Role
